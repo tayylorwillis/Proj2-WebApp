@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Submit Maintenance Request</title>
+    <script>
+        function showPopup() {
+            alert("Maintenance Request sent successfully.");
+        }
+    </script>
+</head>
+<body>
+    <h2>Submit Maintenance Request</h2>
+    <form action="SubmitRequest" method="post" enctype="multipart/form-data">
+        <label for="tenantName">Your Name:</label><br>
+        <input type="text" id="tenantName" name="tenantName" required><br><br>
+
+        <label for="apartmentNumber">Apartment Number:</label><br>
+        <input type="text" id="apartmentNumber" name="apartmentNumber" required><br><br>
+
+        <label for="area">Area of Problem:</label><br>
+        <select id="area" name="area" required>
+            <option value="kitchen">Kitchen</option>
+            <option value="bathroom">Bathroom</option>
+            <option value="living_room">Living Room</option>
+        </select><br><br>
+
+        <label for="description">Description:</label><br>
+        <textarea id="description" name="description" rows="4" cols="50" required></textarea><br><br>
+
+        <label for="photo">Upload Photo (optional):</label><br>
+        <input type="file" id="photo" name="photo"><br><br>
+
+        <input type="submit" value="Submit Request" onclick="showPopup()">
+    </form>
+</body>
+</html>

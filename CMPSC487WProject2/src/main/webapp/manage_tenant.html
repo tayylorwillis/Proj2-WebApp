@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Tenants</title>
+</head>
+<body>
+    <h2>Manage Tenants</h2>
+
+    <h3>Add New Tenant</h3>
+    <form id="addTenantForm">
+        <label for="name">Name:</label>
+        <input type="text" name="name" required><br>
+        <label for="phoneNumber">Phone Number:</label>
+        <input type="text" name="phoneNumber" required><br>
+        <label for="email">Email:</label>
+        <input type="email" name="email" required><br>
+        <label for="checkInDate">Check-In Date:</label>
+        <input type="date" name="checkInDate" required><br>
+        <label for="checkOutDate">Check-Out Date:</label>
+        <input type="date" name="checkOutDate" required><br>
+        <label for="apartmentNumber">Apartment Number:</label>
+        <input type="number" name="apartmentNumber" required><br>
+        <input type="hidden" name="action" value="add">
+        <input type="submit" value="Add Tenant">
+    </form>
+
+    <h3>Delete Tenant</h3>
+    <form id="deleteTenantForm">
+        <label for="tenantId">Tenant ID:</label>
+        <input type="number" name="tenantId" required><br>
+        <input type="hidden" name="action" value="delete">
+        <input type="submit" value="Delete Tenant">
+    </form>
+
+    <h3>Move Tenant</h3>
+    <form id="moveTenantForm">
+        <label for="moveTenantId">Tenant ID:</label>
+        <input type="number" name="moveTenantId" required><br>
+        <label for="newApartmentNumber">New Apartment Number:</label>
+        <input type="number" name="newApartmentNumber" required><br>
+        <input type="hidden" name="action" value="move">
+        <input type="submit" value="Move Tenant">
+    </form>
+
+    <h3>Current Tenants</h3>
+    <table id="tenantsTable">
+        <tr>
+            <th>Tenant ID</th>
+            <th>Name</th>
+            <th>Phone Number</th>
+            <th>Email</th>
+            <th>Check-In Date</th>
+            <th>Check-Out Date</th>
+            <th>Apartment Number</th>
+        </tr>
+    </table>
+
+    <script>
+        document.getElementById("addTenantForm").onsubmit = function(event) {
+            event.preventDefault();
+            submitForm(this);
+        };
+        
+        document.getElementById("deleteTenantForm").onsubmit = function(event) {
+            event.preventDefault(); 
+            submitForm(this);
+        };
+
+        document.getElementById("moveTenantForm").onsubmit = function(event) {
+            event.preventDefault(); 
+            submitForm(this);
+        };
+
+        function submitForm(form) {
+            const action = form.querySelector('input[name="action"]').value;
+            const xhr = new XMLHttpRequest();
+            xhr.open("POST", "ManageTenants", true);
+            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+
+            const formData = new FormData(form);
+            const params = new URLSearchParams(formData).toString();
+
+            xhr.onload = function() {
+                if (xhr.status === 200) {
+                    loadTenants();
+                    form.reset(); 
+                }
+            };
+
+            xhr.send(params);
+        }
+
+        function loadTenants() {
+            const xhr = new XMLHttpRequest();
+            xhr.open("GET", "ManageTenants", true);
+            xhr.onload = function() {
+                document.getElementById("tenantsTable").innerHTML = xhr.responseText;
+            };
+            xhr.send();
+        }
+
+        window.onload = loadTenants;
+    </script>
+</body>
+</html>
